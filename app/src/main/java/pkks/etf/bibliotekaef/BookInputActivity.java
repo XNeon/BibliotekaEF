@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.EditTextPreference;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +42,6 @@ import pkks.etf.bibliotekaef.API.JSON;
 import pkks.etf.bibliotekaef.types.BookEntry;
 import pkks.etf.bibliotekaef.util.BitmapUtils;
 
-
 public class BookInputActivity extends ActionBarActivity implements com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener {
     private static final int REQUEST_CODE_SCANNER = 5125;
     private static final int REQUEST_CODE_FILE_BROWSER = 5130;
@@ -54,10 +56,11 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
     EditText etDate;
     EditText etDesc;
 
+
     public void backPrompt() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Potvrdi");
-        builder.setMessage("Prekinuti unos?");
+        builder.setTitle(getString(R.string.confirm));
+        builder.setMessage(getString(R.string.prekini_unos));
         builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -74,7 +77,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
 
-        progressDialog.setMessage("Pribavljam podatke...");
+        progressDialog.setMessage(getString(R.string.gathering_data));
         progressDialog.show();
 
         new BookFetcher() {
@@ -95,7 +98,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
 
                     progressDialog.dismiss();
                 } else {
-                    Toast.makeText(BookInputActivity.this, "Neuspjesno!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BookInputActivity.this, getString(R.string.neuspjesno), Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 }
             }
@@ -109,7 +112,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
             etISBN.setText(currentEntry.ISBN);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Pretraziti google Books servis za ostale podatke?");
+            builder.setMessage("Pretražiti google Books servis za ostale podatke?");
             builder.setNegativeButton("Ne", null);
             builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
                 @Override
@@ -149,14 +152,14 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
 
                             currentEntry.coverImage = new File(outFile.getAbsolutePath());
                         } catch (Exception er) {
-                            Toast.makeText(BookInputActivity.this, "Neuspjesno ucitavanje!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(BookInputActivity.this, "Neuspješno učitavanje!",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
                 ivAddPic.invalidate();
 
             } catch ( Exception er ) {
-                Toast.makeText(this, "Neuspjesno ucitavanje!",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.neuspjesno_ucitavanje) ,Toast.LENGTH_LONG).show();
             }
         } else if ( requestCode == REQUEST_CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK ) {
             try {
@@ -171,7 +174,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
 
                 currentEntry.coverImage = new File(outFile.getAbsolutePath());
             } catch ( Exception er ) {
-                Toast.makeText(this, "Neuspjesno ucitavanje!",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.neuspjesno_ucitavanje), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -210,13 +213,13 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_input);
         findViewById(R.id.tvFocusEater).requestFocus();
-
         etAuthor = (EditText)findViewById(R.id.etAuthor);
         etDate   = (EditText)findViewById(R.id.etDate);
         etDesc   = (EditText)findViewById(R.id.etDesc);
         etISBN   = (EditText)findViewById(R.id.etISBN);
         etPCount = (EditText)findViewById(R.id.etPageCount);
         etName   = (EditText)findViewById(R.id.etName);
+        ((EditText)findViewById(R.id.etISBN)).setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
 
         if ( savedInstanceState != null )
             currentEntry = (BookEntry)savedInstanceState.getSerializable("currentEntry");
@@ -283,6 +286,57 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
         }
 
 
+        ((EditText)findViewById(R.id.etISBN)).addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (s.length() == 13)
+                {
+                    String ss = s.toString();
+                    if (ss.endsWith("   "))
+                        ss = ss.substring(0, 10);
+                    if (!ss.matches("^\\d{9,12}[\\d|X]$")) {
+                        Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    else
+                    {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(BookInputActivity.this);
+                        builder.setMessage("Pretražiti google Books servis za ostale podatke?");
+                        builder.setNegativeButton("Ne", null);
+                        builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        currentEntry.ISBN = etISBN.getText().toString();
+                                        queryISBN(currentEntry.ISBN);
+                                    }
+                                });
+                            }
+                        });
+                        builder.create().show();
+                    }
+                }
+
+
+            }
+
+        });
         findViewById(R.id.ivAddPic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,7 +345,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     public void run() {
                         AlertDialog.Builder builder = new AlertDialog.Builder(BookInputActivity.this);
                         builder.setTitle("Izaberi izvor:");
-                        builder.setAdapter(new ArrayAdapter<>(BookInputActivity.this, android.R.layout.simple_list_item_1, new String[]{"Sa uredjaja", "Uslikaj"}), new DialogInterface.OnClickListener() {
+                        builder.setAdapter(new ArrayAdapter<>(BookInputActivity.this, android.R.layout.simple_list_item_1, new String[]{getString(R.string.sa_uredjaja), getString(R.string.uslikaj)}), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 0) {
@@ -314,7 +368,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                                 }
                             }
                         });
-                        builder.setNegativeButton("Prekid", null);
+                        builder.setNegativeButton(getString(R.string.cancel), null);
                         builder.create().show();
                     }
                 });
@@ -358,6 +412,17 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                             currentEntry.title.trim().length() == 0 ) {
 
                     Toast.makeText(BookInputActivity.this, "Nisu uneseni svi podaci!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (currentEntry.pageCount <= 0)
+                {
+                    Toast.makeText(BookInputActivity.this, getString(R.string.br_stranica), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (!currentEntry.ISBN.matches("^\\d{9,12}[\\d|X]$"))
+                {
+                    Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
                     return;
                 }
 

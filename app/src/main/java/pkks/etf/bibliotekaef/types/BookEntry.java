@@ -11,9 +11,6 @@ import java.util.Locale;
 
 import pkks.etf.bibliotekaef.R;
 
-/**
- * Created by Adnan on 16.5.2015.
- */
 public class BookEntry implements Serializable {
     public long id;
     public int status;

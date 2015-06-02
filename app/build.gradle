@@ -10,12 +10,22 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
     }
 }
 
@@ -27,4 +37,7 @@ dependencies {
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
     compile 'me.dm7.barcodescanner:zxing:1.7'
+
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
 }

@@ -15,9 +15,6 @@ import java.util.List;
 
 import pkks.etf.bibliotekaef.types.BookEntry;
 
-/**
- * Created by Adnan on 17.5.2015.
- */
 public class BooksDataSource {
     // Database fields
     private SQLiteDatabase  database;

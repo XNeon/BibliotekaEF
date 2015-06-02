@@ -1,11 +1,7 @@
 <resources>
 
-
     <string name="app_name">BibliotekaEF</string>
     <string name="hello_world">Hello world!</string>
-
-    <!-- Ovdje su stringovi koji ce se ispisivati ispred pojedinih atributa,
-        npr ako je author_prefix stavljen na "Od", u listi ce se ispisivati "Od Adnan E." -->
     <string name="author_prefix">Od&#160;</string>
     <string name="title_prefix"></string>
     <string name="date_prefix">Objavljeno:&#160;</string>
@@ -21,13 +17,23 @@
     <string name="title_activity_book_input">Novi unos</string>
     <string name="title_activity_scanner">ISBN Skener</string>
 
-    <string name="status_read">Procitano</string>
-    <string name="status_not_read">Neprocitano</string>
-    <string name="status_reading">Citam</string>
+    <string name="status_read">Pročitano</string>
+    <string name="status_not_read">Nepročitano</string>
+    <string name="status_reading">Čitam</string>
 
     <string name="cancel">Prekid</string>
-    <string name="edit_status">Promjeni status...</string>
-    <string name="edit">Izmjeni...</string>
-    <string name="delete_entry">Izbrisi unos</string>
-    <string name="saved">Spaseno!</string>
+    <string name="edit_status">Promijeni status...</string>
+    <string name="edit">Izmijeni...</string>
+    <string name="delete_entry">Izbriši unos</string>
+    <string name="saved">Spašeno!</string>
+    <string name="neuspjesno_ucitavanje">Neuspješno učitavanje!</string>
+    <string name="prekini_unos">Prekinuti unos?</string>
+    <string name="confirm">Potvrdi</string>
+    <string name="gathering_data">Pribavljam podatke...</string>
+    <string name="neuspjesno">Neuspješno!</string>
+    <string name="sa_uredjaja">Sa uređaja</string>
+    <string name="uslikaj">Uslikaj</string>
+    <string name="invalid_isbn">ISBN nije u ispravnom formatu!\nUnestie 10 ili 13 cifara, umjesto zadnje cifre\nmože biti slovo X\nAko je 10-cifreni ISBN, tri razmaka dodati za dialog!!</string>
+    <string name="br_stranica">Broj stranica mora biti pozitivan!</string>
+
 </resources>

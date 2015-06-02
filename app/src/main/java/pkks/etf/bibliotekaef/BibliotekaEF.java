@@ -25,7 +25,6 @@ import pkks.etf.bibliotekaef.API.BooksDataSource;
 import pkks.etf.bibliotekaef.adapters.ListAdapter;
 import pkks.etf.bibliotekaef.types.BookEntry;
 
-
 public class BibliotekaEF extends ActionBarActivity implements ListAdapter.BookListInterface,
         android.support.v7.widget.SearchView.OnQueryTextListener {
     public static final int REQUEST_CODE_BOOK_INPUT = 100;

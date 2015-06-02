@@ -19,9 +19,6 @@ import java.io.InputStreamReader;
 
 import pkks.etf.bibliotekaef.types.BookEntry;
 
-/**
- * Created by Adnan on 17.5.2015..
- */
 public class JSON {
     //get api key from google developer console
     private static final String ISBN_API_KEY = "AIzaSyCJlp9J3pSVjJ1hr0IO5H6U5vE2mVzZ9Ko";

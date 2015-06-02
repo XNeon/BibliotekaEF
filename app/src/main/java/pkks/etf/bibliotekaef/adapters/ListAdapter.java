@@ -16,9 +16,6 @@ import pkks.etf.bibliotekaef.R;
 import pkks.etf.bibliotekaef.types.BookEntry;
 import pkks.etf.bibliotekaef.util.BitmapUtils;
 
-/**
- * Created by Adnan on 16.5.2015.
- */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<BookEntry> mDataset;
     private Context mContext;
