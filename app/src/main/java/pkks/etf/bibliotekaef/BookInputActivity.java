@@ -328,7 +328,6 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                         AlertDialog.Builder builder = new AlertDialog.Builder(BookInputActivity.this);
                         builder.setMessage("Pretražiti google Books servis za ostale podatke?");
                         builder.setNegativeButton("Ne", null);
-                        builder.setNe
                         builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
