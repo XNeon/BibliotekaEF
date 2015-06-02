@@ -33,7 +33,11 @@
     <string name="neuspjesno">Neuspješno!</string>
     <string name="sa_uredjaja">Sa uređaja</string>
     <string name="uslikaj">Uslikaj</string>
-    <string name="invalid_isbn">ISBN nije u ispravnom formatu!\nUnestie 10 ili 13 cifara, umjesto zadnje cifre\nmože biti slovo X\nAko je 10-cifreni ISBN, tri razmaka dodati za dialog!!</string>
+    <string name="invalid_isbn">ISBN nije u ispravnom formatu!\nUnestie 10 ili 13 cifara, umjesto zadnje cifre\nmože biti slovo X\nAko je 10-cifreni ISBN, tri tačke dodati za dialog!!</string>
     <string name="br_stranica">Broj stranica mora biti pozitivan!</string>
+    <string name="slika_nije_ucitana">Nije izabrana slika!</string>
+    <string name="nisu_uneseni">Nisu uneseni svi podaci!</string>
+    <string name="datum_neispravan">Datum nije ispravan!\nPrimjer: 23-05-1993</string>
+    <string name="prazan_datum">Niste unjeli datum!</string>
 
 </resources>

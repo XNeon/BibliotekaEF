@@ -28,6 +28,7 @@ public class BibliotekaEFTest extends ActivityInstrumentationTestCase2<Bibliotek
 
     public void testButtonUnosKnjige () {
         onView(withText("Dodirni ovdje za novi unos")).perform(click());
+
         onView(withId(R.id.btSave)).check(matches(isDisplayed()));
     }
 }

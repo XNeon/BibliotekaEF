@@ -7,6 +7,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.is;
 
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -38,17 +42,38 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withId(R.id.tvPicPrompt)).check(matches(isDisplayed()));
     }
 
-    /*
     public void testDodavanjeNepotpuneKnjige () {
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText("Nije izabrana slika!")).check(matches(isDisplayed()));
+        onView(withText(R.string.slika_nije_ucitana))
+                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check((matches(isDisplayed())));
     }
-    */
 
-    public void dodavanjeSlike () {
+    public void testDodavanjeSlike () {
         onView(withId(R.id.ivAddPic)).perform(click());
-        onView(withText("Uslikaj")).check(matches(isDisplayed()));
-        // onView(withText("Sa ureðaja")).check(matches(isDisplayed()));
-    }
-}
 
+        onView(withText("Uslikaj")).check(matches(isDisplayed()));
+        onView(withText("Sa ureÄ‘aja")).check(matches(isDisplayed()));
+    }
+
+    public void testPovratakNazad () {
+        onView(withId(R.id.action_back)).perform(click());
+
+        onView(withText("Prekinuti unos?")).check(matches(isDisplayed()));
+        onView(withText("Da")).check(matches(isDisplayed()));
+        onView(withText("Ne")).check(matches(isDisplayed()));
+    }
+    public void testPovratakNazadDa () {
+        onView(withId(R.id.action_back)).perform(click());
+        onView(withText("Da")).perform(click());
+
+        onView(withId(R.id.textView)).check(matches(not(isDisplayed())));
+    }
+    public void testPovratakNazadNe () {
+        onView(withId(R.id.action_back)).perform(click());
+        onView(withText("Ne")).perform(click());
+
+        onView(withId(R.id.scrollView)).check(matches(not(isDisplayed())));
+    }
+
+
+}

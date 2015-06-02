@@ -33,6 +33,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -96,6 +97,10 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     if ( result.pageCount > 0 )
                         etPCount.setText(result.pageCount + "");
 
+                    if (result.getFormattedDate() != null && result.getFormattedDate().trim() != "") {
+                        etDate.setText(result.getFormattedDate());
+                    }
+
                     progressDialog.dismiss();
                 } else {
                     Toast.makeText(BookInputActivity.this, getString(R.string.neuspjesno), Toast.LENGTH_LONG).show();
@@ -109,8 +114,14 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if ( requestCode == REQUEST_CODE_SCANNER && resultCode == 1 ) {
             currentEntry.ISBN = data.getStringExtra("ISBN");
-            etISBN.setText(currentEntry.ISBN);
 
+            if (currentEntry.ISBN.length() == 10) {
+                etISBN.setText(currentEntry.ISBN + "...") ;
+            }
+            else {
+                etISBN.setText(currentEntry.ISBN) ;
+            }
+/*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Pretražiti google Books servis za ostale podatke?");
             builder.setNegativeButton("Ne", null);
@@ -125,7 +136,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     });
                 }
             });
-            builder.create().show();
+            builder.create().show(); */
         } else if ( requestCode == REQUEST_CODE_FILE_BROWSER && resultCode == Activity.RESULT_OK ) {
 
             try {
@@ -204,7 +215,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
         try {
             currentEntry.setDateFromString(etDate.getText().toString());
         } catch ( Exception er ) {
-            //ilegalan text u editText-u
+            //Toast.makeText(BookInputActivity.this, getString(R.string.datum_neispravan), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -306,7 +317,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                 if (s.length() == 13)
                 {
                     String ss = s.toString();
-                    if (ss.endsWith("   "))
+                    if (ss.endsWith("..."))
                         ss = ss.substring(0, 10);
                     if (!ss.matches("^\\d{9,12}[\\d|X]$")) {
                         Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
@@ -317,6 +328,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                         AlertDialog.Builder builder = new AlertDialog.Builder(BookInputActivity.this);
                         builder.setMessage("Pretražiti google Books servis za ostale podatke?");
                         builder.setNegativeButton("Ne", null);
+                        builder.setNe
                         builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -404,14 +416,14 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
             public void onClick(View v) {
                 readData();
                 if ( currentEntry.coverImage == null ) {
-                    Toast.makeText(BookInputActivity.this, "Nije izabrana slika!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BookInputActivity.this, getString(R.string.slika_nije_ucitana), Toast.LENGTH_LONG).show();
                     return;
                 } else if ( currentEntry.description.trim().length() == 0 ||
                             currentEntry.ISBN.trim().length() == 0 ||
                             currentEntry.author.trim().length() == 0 ||
                             currentEntry.title.trim().length() == 0 ) {
 
-                    Toast.makeText(BookInputActivity.this, "Nisu uneseni svi podaci!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BookInputActivity.this, getString(R.string.nisu_uneseni), Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (currentEntry.pageCount <= 0)
@@ -426,10 +438,31 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     return;
                 }
 
+/*                currentEntry.setDateFromString();
+
+                if (currentEntry.getFormattedDate() == null || currentEntry.getFormattedDate().trim().length() == 0 ) {
+                    Toast.makeText(BookInputActivity.this, getString(R.string.prazan_datum), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else {*/
+                    try {
+                        SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy", Locale
+                                .getDefault());
+                        sf.setLenient(false);
+                        currentEntry.releaseDate = sf.parse(etDate.getText().toString());
+                    }
+                    catch (Exception ex) {
+                        Toast.makeText(BookInputActivity.this, getString(R.string.datum_neispravan), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+
                 Intent data = new Intent();
                 if (getIntent().getIntExtra("requestCode", 0) == BibliotekaEF.REQUEST_CODE_BOOK_INPUT) {
                     currentEntry.status = BookEntry.STATUS_NOT_READ;
                 }
+
+
 
                 data.putExtra("book", currentEntry);
 
