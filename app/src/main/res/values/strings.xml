@@ -39,5 +39,9 @@
     <string name="nisu_uneseni">Nisu uneseni svi podaci!</string>
     <string name="datum_neispravan">Datum nije ispravan!\nPrimjer: 23-05-1993</string>
     <string name="prazan_datum">Niste unjeli datum!</string>
+    <string name="opis_unosKnjige">Opis</string>
+    <string name="isbn_unosKnjige">ISBN</string>
+    <string name="autor_unosKnjige">Autor</string>
+    <string name="naziv_unosKnjige">Naziv</string>
 
 </resources>

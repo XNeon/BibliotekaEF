@@ -21,7 +21,6 @@ public class ScannerActivityTest extends ActivityInstrumentationTestCase2<Scanne
         super.setUp();
         getActivity();
     }
-
     /*
     public void testIzlazNaButtonPrekid () {
         onView(withId(R.id.btCancel)).perform(click());

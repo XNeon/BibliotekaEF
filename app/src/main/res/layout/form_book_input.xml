@@ -53,7 +53,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:text="Naziv"
+                android:text="@string/naziv_unosKnjige"
                 android:singleLine="true" />
 
             <EditText
@@ -65,7 +65,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:text="Autor"
+                android:text="@string/autor_unosKnjige"
                 android:singleLine="true" />
 
             <EditText
@@ -77,7 +77,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_toLeftOf="@+id/btISBNScan"
                 android:layout_toStartOf="@+id/btISBNScan"
-                android:text="ISBN"
+                android:text="@string/isbn_unosKnjige"
                 android:singleLine="true" />
 
             <ImageButton
@@ -143,7 +143,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignRight="@+id/btCal"
             android:layout_alignEnd="@+id/btCal"
-            android:text="Opis" />
+            android:text="@string/opis_unosKnjige" />
 
         <Button
             android:layout_width="wrap_content"

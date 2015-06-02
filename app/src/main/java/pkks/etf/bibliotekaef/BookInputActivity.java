@@ -414,17 +414,19 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
             @Override
             public void onClick(View v) {
                 readData();
-                if ( currentEntry.coverImage == null ) {
-                    Toast.makeText(BookInputActivity.this, getString(R.string.slika_nije_ucitana), Toast.LENGTH_LONG).show();
-                    return;
-                } else if ( currentEntry.description.trim().length() == 0 ||
-                            currentEntry.ISBN.trim().length() == 0 ||
-                            currentEntry.author.trim().length() == 0 ||
-                            currentEntry.title.trim().length() == 0 ) {
+                if ( currentEntry.description.trim().length() == 0 ||
+                        currentEntry.description == getString(R.string.opis_unosKnjige) ||
+                        currentEntry.ISBN.trim().length() == 0 ||
+                        currentEntry.ISBN == getString(R.string.isbn_unosKnjige) ||
+                        currentEntry.author.trim().length() == 0 ||
+                        currentEntry.author == getString(R.string.autor_unosKnjige) ||
+                        currentEntry.title.trim().length() == 0 ||
+                        currentEntry.title == getString(R.string.naziv_unosKnjige)) {
 
                     Toast.makeText(BookInputActivity.this, getString(R.string.nisu_uneseni), Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 if (currentEntry.pageCount <= 0)
                 {
                     Toast.makeText(BookInputActivity.this, getString(R.string.br_stranica), Toast.LENGTH_LONG).show();
@@ -444,17 +446,21 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     return;
                 }
                 else {*/
-                    try {
-                        SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy", Locale
-                                .getDefault());
-                        sf.setLenient(false);
-                        currentEntry.releaseDate = sf.parse(etDate.getText().toString());
-                    }
-                    catch (Exception ex) {
-                        Toast.makeText(BookInputActivity.this, getString(R.string.datum_neispravan), Toast.LENGTH_LONG).show();
-                        return;
-                    }
+                try {
+                    SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy", Locale
+                            .getDefault());
+                    sf.setLenient(false);
+                    currentEntry.releaseDate = sf.parse(etDate.getText().toString());
+                }
+                catch (Exception ex) {
+                    Toast.makeText(BookInputActivity.this, getString(R.string.datum_neispravan), Toast.LENGTH_LONG).show();
+                    return;
+                }
 
+                if ( currentEntry.coverImage == null ) {
+                    Toast.makeText(BookInputActivity.this, getString(R.string.slika_nije_ucitana), Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 Intent data = new Intent();
                 if (getIntent().getIntExtra("requestCode", 0) == BibliotekaEF.REQUEST_CODE_BOOK_INPUT) {
