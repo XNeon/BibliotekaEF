@@ -51,30 +51,4 @@ public class BibliotekaEFTest extends ActivityInstrumentationTestCase2<Bibliotek
         onView(withId(R.id.btCancel)).perform(click());
         onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
     }
-
-    public void testUnesenaKnjiga () {
-        onView(withText("Dodirni ovdje za novi unos")).perform(click());
-        onView(withId(R.id.etPageCount)).perform(typeText("200"));
-        Espresso.closeSoftKeyboard();
-        onView(withId(R.id.etISBN)).perform(typeText("9780545010221"));
-        Espresso.closeSoftKeyboard();
-        onView(withText("Pretražiti google Books servis za ostale podatke?")).check(matches(isDisplayed()));
-        onView(withText("Da")).check(matches(isDisplayed()));
-        onView(withText("Ne")).check(matches(isDisplayed()));
-        onView(withText("Ne")).perform(click());
-        onView(withId(R.id.etDate)).perform(typeText("20-05-2015"));
-        Espresso.closeSoftKeyboard();
-        onView(withId(R.id.etAuthor)).perform(typeText("Enil Pajic, Faruk Ljuca"));
-        Espresso.closeSoftKeyboard();
-        onView(withId(R.id.etName)).perform(typeText("Osnove android programiranja i testiranja"));
-        Espresso.closeSoftKeyboard();
-        //BookInputActivity.Ja.currentEntry.coverImage = new File();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        onView(withId(R.id.btSave)).perform(click());
-        onView(withText("Dodirni ovdje za novi unos")).check(matches(isDisplayed()));
-    }
 }
