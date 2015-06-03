@@ -319,7 +319,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     String ss = s.toString();
                     if (ss.endsWith("..."))
                         ss = ss.substring(0, 10);
-                    if (!ss.matches("^\\d{9,12}[\\d|X]$")) {
+                    if (!ss.matches("^\\d{9}[\\d|X]$") || !ss.matches("^\\d{12}[\\d|X]$")) {
                         Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -415,13 +415,13 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
             public void onClick(View v) {
                 readData();
                 if ( currentEntry.description.trim().length() == 0 ||
-                        currentEntry.description == getString(R.string.opis_unosKnjige) ||
+                        currentEntry.description.equals(getString(R.string.opis_unosKnjige)) ||
                         currentEntry.ISBN.trim().length() == 0 ||
-                        currentEntry.ISBN == getString(R.string.isbn_unosKnjige) ||
+                        currentEntry.ISBN.equals(getString(R.string.isbn_unosKnjige)) ||
                         currentEntry.author.trim().length() == 0 ||
-                        currentEntry.author == getString(R.string.autor_unosKnjige) ||
+                        currentEntry.author.equals(getString(R.string.autor_unosKnjige)) ||
                         currentEntry.title.trim().length() == 0 ||
-                        currentEntry.title == getString(R.string.naziv_unosKnjige)) {
+                        currentEntry.title.equals(getString(R.string.naziv_unosKnjige))) {
 
                     Toast.makeText(BookInputActivity.this, getString(R.string.nisu_uneseni), Toast.LENGTH_LONG).show();
                     return;
@@ -433,7 +433,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     return;
                 }
 
-                if (!currentEntry.ISBN.matches("^\\d{9,12}[\\d|X]$"))
+                if (!currentEntry.ISBN.matches("^\\d{9}[\\d|X]$") && !currentEntry.ISBN.matches("^\\d{12}[\\d|X]$"))
                 {
                     Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
                     return;

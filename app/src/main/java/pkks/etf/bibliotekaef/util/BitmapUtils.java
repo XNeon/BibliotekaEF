@@ -9,9 +9,6 @@ import android.net.Uri;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
-/**
- * Created by Adnan on 18.5.2015.
- */
 public class BitmapUtils {
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
