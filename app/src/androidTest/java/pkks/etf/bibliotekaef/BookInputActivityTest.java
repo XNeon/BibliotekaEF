@@ -96,7 +96,7 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
     public void testValidanISBN_10cifara () {
         onView(withId(R.id.etPageCount)).perform(typeText("200"));
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.etISBN)).perform(typeText("0545010225..."));
+        onView(withId(R.id.etISBN)).perform(typeText("0545139708..."));
         Espresso.closeSoftKeyboard();
         onView(withText("Pretražiti google Books servis za ostale podatke?")).check(matches(isDisplayed()));
         onView(withText("Da")).check(matches(isDisplayed()));
@@ -140,7 +140,7 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withId(R.id.etDate)).perform(typeText("20-05-2015"));
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.slika_nije_ucitana))
+        onView(withText(R.string.nisu_uneseni))
                 .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 

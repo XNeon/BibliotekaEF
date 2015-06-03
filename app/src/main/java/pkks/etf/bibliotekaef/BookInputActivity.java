@@ -319,12 +319,13 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     String ss = s.toString();
                     if (ss.endsWith("..."))
                         ss = ss.substring(0, 10);
-                    if (!ss.matches("^\\d{9}[\\d|X]$") || !ss.matches("^\\d{12}[\\d|X]$")) {
+                    if (!ss.matches("^\\d{9}[\\d|X]$") && !ss.matches("^\\d{12}[\\d|X]$")) {
                         Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
                         return;
                     }
                     else
                     {
+                        final String cheapTrick = ss;
                         AlertDialog.Builder builder = new AlertDialog.Builder(BookInputActivity.this);
                         builder.setMessage("Pretražiti google Books servis za ostale podatke?");
                         builder.setNegativeButton("Ne", null);
@@ -334,7 +335,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        currentEntry.ISBN = etISBN.getText().toString();
+                                        currentEntry.ISBN = cheapTrick;
                                         queryISBN(currentEntry.ISBN);
                                     }
                                 });
@@ -414,18 +415,6 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
             @Override
             public void onClick(View v) {
                 readData();
-                if ( currentEntry.description.trim().length() == 0 ||
-                        currentEntry.description.equals(getString(R.string.opis_unosKnjige)) ||
-                        currentEntry.ISBN.trim().length() == 0 ||
-                        currentEntry.ISBN.equals(getString(R.string.isbn_unosKnjige)) ||
-                        currentEntry.author.trim().length() == 0 ||
-                        currentEntry.author.equals(getString(R.string.autor_unosKnjige)) ||
-                        currentEntry.title.trim().length() == 0 ||
-                        currentEntry.title.equals(getString(R.string.naziv_unosKnjige))) {
-
-                    Toast.makeText(BookInputActivity.this, getString(R.string.nisu_uneseni), Toast.LENGTH_LONG).show();
-                    return;
-                }
 
                 if (currentEntry.pageCount <= 0)
                 {
@@ -454,6 +443,19 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                 }
                 catch (Exception ex) {
                     Toast.makeText(BookInputActivity.this, getString(R.string.datum_neispravan), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if ( currentEntry.description.trim().length() == 0 ||
+                        currentEntry.description.equals(getString(R.string.opis_unosKnjige)) ||
+                        currentEntry.ISBN.trim().length() == 0 ||
+                        currentEntry.ISBN.equals(getString(R.string.isbn_unosKnjige)) ||
+                        currentEntry.author.trim().length() == 0 ||
+                        currentEntry.author.equals(getString(R.string.autor_unosKnjige)) ||
+                        currentEntry.title.trim().length() == 0 ||
+                        currentEntry.title.equals(getString(R.string.naziv_unosKnjige))) {
+
+                    Toast.makeText(BookInputActivity.this, getString(R.string.nisu_uneseni), Toast.LENGTH_LONG).show();
                     return;
                 }
 
