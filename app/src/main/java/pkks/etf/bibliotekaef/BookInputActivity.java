@@ -47,6 +47,8 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
     private static final int REQUEST_CODE_SCANNER = 5125;
     private static final int REQUEST_CODE_FILE_BROWSER = 5130;
     private static final int REQUEST_CODE_TAKE_PICTURE = 5150;
+    private String ToastMessage = "";
+    public static BookInputActivity Ja;
 
     BookEntry currentEntry;
 
@@ -73,7 +75,13 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
         builder.setNegativeButton("Ne", null);
         builder.create().show();
     }
-
+    public String GetToastMessage ()
+    {
+        // Kako bi se svaki pt obrisao toast (za Espresso testove)
+        String tmp = ToastMessage;
+        ToastMessage = "";
+        return tmp;
+    }
     public void queryISBN(String ISBN) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
@@ -104,6 +112,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                     progressDialog.dismiss();
                 } else {
                     Toast.makeText(BookInputActivity.this, getString(R.string.neuspjesno), Toast.LENGTH_LONG).show();
+                    ToastMessage = getString(R.string.neuspjesno);
                     progressDialog.dismiss();
                 }
             }
@@ -163,7 +172,8 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
 
                             currentEntry.coverImage = new File(outFile.getAbsolutePath());
                         } catch (Exception er) {
-                            Toast.makeText(BookInputActivity.this, "Neuspješno učitavanje!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(BookInputActivity.this, getString(R.string.neuspjesno_ucitavanje),Toast.LENGTH_LONG).show();
+                            ToastMessage = getString(R.string.neuspjesno_ucitavanje);
                         }
                     }
                 });
@@ -171,6 +181,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
 
             } catch ( Exception er ) {
                 Toast.makeText(this, getString(R.string.neuspjesno_ucitavanje) ,Toast.LENGTH_LONG).show();
+                ToastMessage = getString(R.string.neuspjesno_ucitavanje);
             }
         } else if ( requestCode == REQUEST_CODE_TAKE_PICTURE && resultCode == Activity.RESULT_OK ) {
             try {
@@ -186,6 +197,8 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                 currentEntry.coverImage = new File(outFile.getAbsolutePath());
             } catch ( Exception er ) {
                 Toast.makeText(this, getString(R.string.neuspjesno_ucitavanje), Toast.LENGTH_LONG).show();
+                ToastMessage = getString(R.string.neuspjesno);
+
             }
         }
     }
@@ -222,6 +235,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Ja = this;
         setContentView(R.layout.activity_book_input);
         findViewById(R.id.tvFocusEater).requestFocus();
         etAuthor = (EditText)findViewById(R.id.etAuthor);
@@ -231,7 +245,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
         etPCount = (EditText)findViewById(R.id.etPageCount);
         etName   = (EditText)findViewById(R.id.etName);
         ((EditText)findViewById(R.id.etISBN)).setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
-
+        ToastMessage = "";
         if ( savedInstanceState != null )
             currentEntry = (BookEntry)savedInstanceState.getSerializable("currentEntry");
         else if ( getIntent().getSerializableExtra("book") != null ) {
@@ -321,6 +335,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                         ss = ss.substring(0, 10);
                     if (!ss.matches("^\\d{9}[\\d|X]$") && !ss.matches("^\\d{12}[\\d|X]$")) {
                         Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
+                        ToastMessage = getString(R.string.invalid_isbn);
                         return;
                     }
                     else
@@ -349,6 +364,7 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
             }
 
         });
+
         findViewById(R.id.ivAddPic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -419,12 +435,15 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                 if (currentEntry.pageCount <= 0)
                 {
                     Toast.makeText(BookInputActivity.this, getString(R.string.br_stranica), Toast.LENGTH_LONG).show();
+                    ToastMessage = getString(R.string.br_stranica);
                     return;
                 }
-
+                if (currentEntry.ISBN.endsWith("..."))
+                    currentEntry.ISBN = currentEntry.ISBN.substring(0, 10);
                 if (!currentEntry.ISBN.matches("^\\d{9}[\\d|X]$") && !currentEntry.ISBN.matches("^\\d{12}[\\d|X]$"))
                 {
                     Toast.makeText(BookInputActivity.this, getString(R.string.invalid_isbn), Toast.LENGTH_LONG).show();
+                    ToastMessage = getString(R.string.invalid_isbn);
                     return;
                 }
 
@@ -443,24 +462,31 @@ public class BookInputActivity extends ActionBarActivity implements com.fourmob.
                 }
                 catch (Exception ex) {
                     Toast.makeText(BookInputActivity.this, getString(R.string.datum_neispravan), Toast.LENGTH_LONG).show();
+                    ToastMessage = getString(R.string.datum_neispravan);
                     return;
                 }
 
-                if ( currentEntry.description.trim().length() == 0 ||
-                        currentEntry.description.equals(getString(R.string.opis_unosKnjige)) ||
-                        currentEntry.ISBN.trim().length() == 0 ||
-                        currentEntry.ISBN.equals(getString(R.string.isbn_unosKnjige)) ||
-                        currentEntry.author.trim().length() == 0 ||
-                        currentEntry.author.equals(getString(R.string.autor_unosKnjige)) ||
-                        currentEntry.title.trim().length() == 0 ||
-                        currentEntry.title.equals(getString(R.string.naziv_unosKnjige))) {
+                if (currentEntry.ISBN.trim().length() == 0 ||
+                    currentEntry.ISBN.equals(getString(R.string.isbn_unosKnjige)) ||
+                    currentEntry.author.trim().length() == 0 ||
+                    currentEntry.author.equals(getString(R.string.autor_unosKnjige)) ||
+                    currentEntry.title.trim().length() == 0 ||
+                    currentEntry.title.equals(getString(R.string.naziv_unosKnjige))) {
+
+/*                    Toast t = new Toast(BookInputActivity.this);
+                    t.setDuration(Toast.LENGTH_LONG);
+                    t.setText(getString(R.string.nisu_uneseni));
+                    t.show();
+                    */
 
                     Toast.makeText(BookInputActivity.this, getString(R.string.nisu_uneseni), Toast.LENGTH_LONG).show();
+                    ToastMessage = getString(R.string.nisu_uneseni);
                     return;
                 }
 
                 if ( currentEntry.coverImage == null ) {
                     Toast.makeText(BookInputActivity.this, getString(R.string.slika_nije_ucitana), Toast.LENGTH_LONG).show();
+                    ToastMessage = getString(R.string.slika_nije_ucitana);
                     return;
                 }
 

@@ -19,6 +19,8 @@ import android.test.ActivityInstrumentationTestCase2;
 
 public class BookInputActivityTest extends ActivityInstrumentationTestCase2<BookInputActivity> {
 
+    private BookInputActivity aktivnost;
+
     public BookInputActivityTest () {
         super(BookInputActivity.class);
     }
@@ -26,7 +28,7 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
     @Override
     protected void setUp () throws Exception {
         super.setUp();
-        getActivity();
+        aktivnost = getActivity();
     }
 
     public void testPostojanjeSvihElemenata () {
@@ -46,34 +48,58 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
     }
 
     public void testDodavanjePrazneKnjige () {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.br_stranica))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.br_stranica), aktivnost.GetToastMessage());
+        //onView(withText(R.string.br_stranica))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
     // Testiranje broja stranica
 
     public void testValidanBrojStranica () {
         onView(withId(R.id.etPageCount)).perform(typeText("200"));
         Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.invalid_isbn))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.invalid_isbn), aktivnost.GetToastMessage());
+        //onView(withText(R.string.invalid_isbn))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testNegativanBrojStranica () {
         onView(withId(R.id.etPageCount)).perform(typeText("-200"));
         Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.br_stranica))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.br_stranica), aktivnost.GetToastMessage());
+        //onView(withText(R.string.br_stranica))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testBrojStranicaNula () {
         onView(withId(R.id.etPageCount)).perform(typeText("0"));
         Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.br_stranica))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.br_stranica), aktivnost.GetToastMessage());
+        //onView(withText(R.string.br_stranica))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
 
@@ -88,9 +114,15 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withText("Da")).check(matches(isDisplayed()));
         onView(withText("Ne")).check(matches(isDisplayed()));
         onView(withText("Ne")).perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.datum_neispravan))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.datum_neispravan), aktivnost.GetToastMessage());
+        //onView(withText(R.string.datum_neispravan))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testValidanISBN_10cifara () {
@@ -102,9 +134,15 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withText("Da")).check(matches(isDisplayed()));
         onView(withText("Ne")).check(matches(isDisplayed()));
         onView(withText("Ne")).perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.datum_neispravan))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.datum_neispravan), aktivnost.GetToastMessage());
+        //onView(withText(R.string.datum_neispravan))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testKratakISBN () {
@@ -112,17 +150,24 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.etISBN)).perform(typeText("97805"));
         Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.invalid_isbn))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.invalid_isbn), aktivnost.GetToastMessage());
+        //onView(withText(R.string.invalid_isbn))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testNevalidanISBN () {
         onView(withId(R.id.etPageCount)).perform(typeText("200"));
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.etISBN)).perform(typeText("aaaaaaaaaaaaa"));
-        onView(withText(R.string.invalid_isbn))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.invalid_isbn), aktivnost.GetToastMessage());
+        //onView(withText(R.string.invalid_isbn))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
 
@@ -139,9 +184,15 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withText("Ne")).perform(click());
         onView(withId(R.id.etDate)).perform(typeText("20-05-2015"));
         Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.nisu_uneseni))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.nisu_uneseni), aktivnost.GetToastMessage());
+        //onView(withText(R.string.nisu_uneseni))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testNevalidanDatum () {
@@ -155,9 +206,15 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withText("Ne")).perform(click());
         onView(withId(R.id.etDate)).perform(typeText("aaaa"));
         Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.datum_neispravan))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.datum_neispravan), aktivnost.GetToastMessage());
+        //onView(withText(R.string.datum_neispravan))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testNevalidanDatum_restrikcijeNaFormat () {
@@ -171,9 +228,92 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withText("Ne")).perform(click());
         onView(withId(R.id.etDate)).perform(typeText("20-50-2015"));
         Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.btSave)).perform(click());
-        onView(withText(R.string.datum_neispravan))
-                .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        assertEquals(aktivnost.getString(R.string.datum_neispravan), aktivnost.GetToastMessage());
+        //onView(withText(R.string.datum_neispravan))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+
+    // Testiranje podataka
+
+    public void testValidnihPodataka () {
+        onView(withId(R.id.etPageCount)).perform(typeText("200"));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.etISBN)).perform(typeText("9780545010221"));
+        Espresso.closeSoftKeyboard();
+        onView(withText("Pretražiti google Books servis za ostale podatke?")).check(matches(isDisplayed()));
+        onView(withText("Da")).check(matches(isDisplayed()));
+        onView(withText("Ne")).check(matches(isDisplayed()));
+        onView(withText("Ne")).perform(click());
+        onView(withId(R.id.etDate)).perform(typeText("20-05-2015"));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.etAuthor)).perform(typeText("Enil Pajic, Faruk Ljuca"));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.etName)).perform(typeText("Osnove android programiranja i testiranja"));
+        Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.btSave)).perform(click());
+        assertEquals(aktivnost.getString(R.string.slika_nije_ucitana), aktivnost.GetToastMessage());
+        //onView(withText(R.string.datum_neispravan))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+    public void testFaliAutor () {
+        onView(withId(R.id.etPageCount)).perform(typeText("200"));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.etISBN)).perform(typeText("9780545010221"));
+        Espresso.closeSoftKeyboard();
+        onView(withText("Pretražiti google Books servis za ostale podatke?")).check(matches(isDisplayed()));
+        onView(withText("Da")).check(matches(isDisplayed()));
+        onView(withText("Ne")).check(matches(isDisplayed()));
+        onView(withText("Ne")).perform(click());
+        onView(withId(R.id.etDate)).perform(typeText("20-05-2015"));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.etName)).perform(typeText("Osnove android programiranja i testiranja"));
+        Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.btSave)).perform(click());
+        assertEquals(aktivnost.getString(R.string.nisu_uneseni), aktivnost.GetToastMessage());
+        //onView(withText(R.string.datum_neispravan))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+    public void testFaliNaslov () {
+        onView(withId(R.id.etPageCount)).perform(typeText("200"));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.etISBN)).perform(typeText("9780545010221"));
+        Espresso.closeSoftKeyboard();
+        onView(withText("Pretražiti google Books servis za ostale podatke?")).check(matches(isDisplayed()));
+        onView(withText("Da")).check(matches(isDisplayed()));
+        onView(withText("Ne")).check(matches(isDisplayed()));
+        onView(withText("Ne")).perform(click());
+        onView(withId(R.id.etDate)).perform(typeText("20-05-2015"));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.etAuthor)).perform(typeText("Enil Pajic, Faruk Ljuca"));
+        Espresso.closeSoftKeyboard();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.btSave)).perform(click());
+        assertEquals(aktivnost.getString(R.string.nisu_uneseni), aktivnost.GetToastMessage());
+        //onView(withText(R.string.datum_neispravan))
+        //        .inRoot(withDecorView(not(getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     public void testDodavanjeSlike () {
@@ -191,23 +331,10 @@ public class BookInputActivityTest extends ActivityInstrumentationTestCase2<Book
         onView(withText("Ne")).check(matches(isDisplayed()));
     }
 
-    /*
-    public void testPovratakNazadDa () {
-        onView(withId(R.id.action_back)).perform(click());
-        onView(withText("Da")).perform(click());
-
-        onView(withId(R.id.textView)).check(matches(not(isDisplayed())));
-    }
-    */
-
-    /*
     public void testPovratakNazadNe () {
         onView(withId(R.id.action_back)).perform(click());
         onView(withText("Ne")).perform(click());
 
-        onView(withId(R.id.scrollView)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
     }
-    */
-
-
 }
